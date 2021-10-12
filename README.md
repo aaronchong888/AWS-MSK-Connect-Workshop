@@ -48,16 +48,21 @@ Download the Salesforce Connector from Confluent:
 3. Open the Amazon MSK console at [https://console.aws.amazon.com/msk/](https://console.aws.amazon.com/msk/)
 
 In the left pane expand **MSK Connect**, then choose **Custom plugins**.
-(step1-3)
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step1-3.png" width="90%"></p>
+<br>
 
 4. Choose **Create custom plugin**, and choose the ZIP file uploaded in Step 2.
-(step1-4)
 
 5. Enter **salesforce-connector-plugin** for the custom plugin name, then choose **Create custom plugin**.
-(step1-5)
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step1-5.png" width="90%"></p>
+<br>
 
 6. Wait for a few minutes for the creation process to complete. You should see the following message in a banner at the top of the browser window when completed.
-(step1-6)
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step1-6.png" width="90%"></p>
+<br>
 
 ### Create Apache Kakfa topic
 
