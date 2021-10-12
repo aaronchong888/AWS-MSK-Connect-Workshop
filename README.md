@@ -69,18 +69,26 @@ In the left pane expand **MSK Connect**, then choose **Custom plugins**.
 1. Open the Amazon MSK console at [https://console.aws.amazon.com/msk/](https://console.aws.amazon.com/msk/)
 
 Choose the MSK Cluster created by CloudFormation (e.g. MSKCluster-**Random**), then click on **View client information**.
-(step2-1)
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step2-1.png" width="90%"></p>
+<br>
 
 2. Copy the **Bootstrap servers** and **Apache ZooKeeper connection** strings, you will need to use them in the later steps.
-(step2-2)
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step2-2.png" width="90%"></p>
+<br>
 
 3. Open the Amazon EC2 console at [https://console.aws.amazon.com/ec2/](https://console.aws.amazon.com/ec2/)
 
 Find the EC2 instance named **KafkaClientInstance**, right-click on it and choose **Connect**.
-(step2-3)
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step2-3.png" width="90%"></p>
+<br>
 
 4. Go to the **SSH client** tab and follow the instructions to ssh into the EC2 instance.
-(step2-4)
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step2-4.png" width="90%"></p>
+<br>
 
 5. Run the following command on the EC2 instance, replacing **ZookeeperConnectString** with the value that you saved when you viewed the cluster's client information.
 
@@ -89,7 +97,9 @@ kafka/kafka_2.12-2.2.1/bin/kafka-topics.sh --create --zookeeper <ZookeeperConnec
 ```
 
 If the command succeeds, you should see the message: **Created topic mskconnect-salesforce-topic.**
-(step2-5)
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step2-5.png" width="90%"></p>
+<br>
 
 ### Salesforce Setup
 
