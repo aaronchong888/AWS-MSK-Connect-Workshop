@@ -104,32 +104,48 @@ If the command succeeds, you should see the message: **Created topic mskconnect-
 ### Salesforce Setup
 
 1. Go to [https://developer.Salesforce.com/signup](https://developer.Salesforce.com/signup) and register for a trial of the Developer Edition account in Salesforce.
-(step3-1)
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step3-1.png" width="90%"></p>
+<br>
 
 2. Create a new **Connected App** in Salesforce. Go to **Setup**, search for **App Manager** in the search box. Click the **App Manager** under **Apps**, and then click the **New Connected App** button to set up a new API client.
-(step3-2)
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step3-2.png" width="90%"></p>
+<br>
 
 3. Enable the OAuth settings. For testing purpose, provide full API access:
-(step3-3)
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step3-3.png" width="90%"></p>
+<br>
 
 4. Copy the Consumer Key and Consumer Secret, you will need to use them in the later steps.
-(step3-4)
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step3-4.png" width="90%"></p>
+<br>
 
 5. Click on the Profile icon and go to the **Settings**. Choose **Reset My Security Token** to generate a new security token, it will be sent to your email address.
-(step3-5)
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step3-5.png" width="90%"></p>
+<br>
 
 ### Create connector
 
 1. Open the Amazon MSK console at [https://console.aws.amazon.com/msk/](https://console.aws.amazon.com/msk/)
 
 In the left pane expand **MSK Connect**, then choose **Connectors**.
-(step4-1)
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-1.png" width="90%"></p>
+<br>
 
 2. Click **Create connector**, and choose the **salesforce-connector-plugin**, and then click **Next**.
-(step4-2)
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-2.png" width="90%"></p>
+<br>
 
 3. For the Connector name, enter **mskconnect-salesforce-connector**. Choose the **MSK cluster** type and select the MSK Cluster created by CloudFormation (e.g. MSKCluster-**Random**).
-(step4-3)
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-3.png" width="90%"></p>
+<br>
 
 4. For the Connector configuration, paste the following values:
 ```
@@ -151,12 +167,19 @@ salesforce.object=Lead
 For details on the configuration properties, refer to the [Salesforce Connector documentation](https://docs.confluent.io/kafka-connect-salesforce/current/overview.html)
 
 5. For the Access permissions, choose the IAM role created by CloudFormation (e.g. **stackName**-MSKConnectRole-**Random**), and then click **Next**.
-(step4-5)
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-5.png" width="90%"></p>
+<br>
 
 6. Keep the default settings on Security, then click **Next**.
 
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-6.png" width="90%"></p>
+<br>
+
 7. For Logs, choose **Deliver to Amazon CloudWatch Logs** and **Browse** to search for the log group created for MSK Connect by CloudFormation (e.g. **stackName**-MSKConnectLogGroup-**Random**), and then click **Next**.
-(step4-7)
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-7.png" width="90%"></p>
+<br>
 
 8. Review and choose **Create connector**.
 
