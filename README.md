@@ -37,12 +37,12 @@ Download the Salesforce Connector from Confluent:
 
 1. Click and download the ZIP file:
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step1-1.png" width="50%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step1-1.png" width="90%"></p>
 <br>
 
 2. Upload the ZIP file to the S3 bucket created by CloudFormation (e.g. mskconnect-bucket-**AWS-Account-ID**-**AWS-Region**-**Random**).
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step1-2.png" width="50%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step1-2.png" width="90%"></p>
 <br>
 
 3. Open the Amazon MSK console at [https://console.aws.amazon.com/msk/](https://console.aws.amazon.com/msk/)
