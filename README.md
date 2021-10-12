@@ -7,13 +7,13 @@ The workshop is divided into multiple modules. Each module targets a specific co
 ### Costs
 Some of the labs in the workshop will require you to create resources in your AWS cloud account. This will incur costs that may not be covered in AWS free tier. We recommend that you clean up the resources once you are finished with the lab to stop incurring any additional charges. 
 
-(To be updated: instructions to clean up the resources created within the labs)
+> To be updated: instructions to clean up the resources created within the labs
 
 ### Regions
 The workshop is supported in the regions where the Amazon MSK Connect feature is available. Workshop has been tested in following regions.
 
-- US East (N. Virginia) (us-east-1)
-- Asia Pacific (Singapore) (ap-southeast-1)
+- **US East (N. Virginia)** (us-east-1)
+- **Asia Pacific (Singapore)** (ap-southeast-1)
 
 ## Prerequisites
 
@@ -22,8 +22,7 @@ Create an EC2 SSH Key Pair required in the Lab Setup part, so that you can login
 
 ## Lab Setup
 
-Download the CloudFormation template provided in the repo:
-(Link to be updated)
+Download the CloudFormation template provided in the repo: [msk-connect-workshop.yml](https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/CloudFormation%20Template/msk-connect-workshop.yml)
 
 Navigate to AWS Cloudformation in AWS console and create the stack.
 
@@ -37,10 +36,14 @@ Download the Salesforce Connector from Confluent:
 > Please note that this connector is a Confluent Commercial Connector and supported by Confluent. The requires purchase of a Confluent Platform subscription, including a license to this Commercial Connector. You can also use this connector for a 30-day trial without an enterprise license key - after 30 days, you need to purchase a subscription.
 
 1. Click and download the ZIP file:
-(step1-1)
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step1-1.png" width="50%"></p>
+<br>
 
 2. Upload the ZIP file to the S3 bucket created by CloudFormation (e.g. mskconnect-bucket-**AWS-Account-ID**-**AWS-Region**-**Random**).
-(step1-2)
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step1-2.png" width="50%"></p>
+<br>
 
 3. Open the Amazon MSK console at [https://console.aws.amazon.com/msk/](https://console.aws.amazon.com/msk/)
 
