@@ -1,0 +1,407 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
+    Type: 'AWS::EC2::KeyPair::KeyName'
+    ConstraintDescription: Can contain only ASCII characters.
+  SSHLocation:
+    Description: The IP address range that can be used to SSH to the EC2 instances
+    Type: String
+    MinLength: '9'
+    MaxLength: '18'
+    Default: 0.0.0.0/0
+    AllowedPattern: '(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})'
+    ConstraintDescription: Must be a valid IP CIDR range of the form x.x.x.x/x
+Mappings:
+  SubnetConfig:
+    VPC:
+      CIDR: 10.0.0.0/16
+    PublicOne:
+      CIDR: 10.0.0.0/24
+    PrivateOne:
+      CIDR: 10.0.1.0/24
+    PrivateTwo:
+      CIDR: 10.0.2.0/24
+    PrivateThree:
+      CIDR: 10.0.3.0/24
+  RegionAMI:
+    us-east-1:
+      HVM64: ami-0c6b1d09930fac512
+    us-west-2:
+      HVM64: ami-0cb72367e98845d43
+    ap-southeast-1:
+      HVM64: ami-0b5a47f8865280111
+Resources:
+  MSKLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      RetentionInDays: 7
+  MSKConnectLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      RetentionInDays: 7
+  S3Bucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName:
+        !Sub
+          - 'mskconnect-bucket-${AWS::AccountId}-${AWS::Region}-${RandomGUID}'
+          - { RandomGUID: !Select [0, !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId ]]]] }
+  VPC:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      CidrBlock: !FindInMap 
+        - SubnetConfig
+        - VPC
+        - CIDR
+      Tags:
+        - Key: Name
+          Value: MSKVPC
+  PublicSubnetOne:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: !Select 
+        - 0
+        - !GetAZs 
+          Ref: 'AWS::Region'
+      VpcId: !Ref VPC
+      CidrBlock: !FindInMap 
+        - SubnetConfig
+        - PublicOne
+        - CIDR
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: MSKPublicSubnet
+  PrivateSubnetOne:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: !Select 
+        - 0
+        - !GetAZs 
+          Ref: 'AWS::Region'
+      VpcId: !Ref VPC
+      CidrBlock: !FindInMap 
+        - SubnetConfig
+        - PrivateOne
+        - CIDR
+      Tags:
+        - Key: Name
+          Value: MSKPrivateSubnetOne
+  PrivateSubnetTwo:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: !Select 
+        - 1
+        - !GetAZs 
+          Ref: 'AWS::Region'
+      VpcId: !Ref VPC
+      CidrBlock: !FindInMap 
+        - SubnetConfig
+        - PrivateTwo
+        - CIDR
+      Tags:
+        - Key: Name
+          Value: MSKPrivateSubnetTwo
+  PrivateSubnetThree:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: !Select 
+        - 2
+        - !GetAZs 
+          Ref: 'AWS::Region'
+      VpcId: !Ref VPC
+      CidrBlock: !FindInMap 
+        - SubnetConfig
+        - PrivateThree
+        - CIDR
+      Tags:
+        - Key: Name
+          Value: MSKPrivateSubnetThree
+  InternetGateway:
+    Type: 'AWS::EC2::InternetGateway'
+  GatewayAttachement:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+  PublicRouteTable:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VPC
+  PublicRoute:
+    Type: 'AWS::EC2::Route'
+    DependsOn: GatewayAttachement
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+  PublicSubnetOneRouteTableAssociation:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      SubnetId: !Ref PublicSubnetOne
+      RouteTableId: !Ref PublicRouteTable
+  NATGatewayEIP:
+    Type: AWS::EC2::EIP
+    DependsOn: GatewayAttachement
+    Properties:
+      Domain: vpc
+  NATGateway:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt 
+        - NATGatewayEIP
+        - AllocationId
+      SubnetId: !Ref PublicSubnetOne
+  PrivateRouteTable:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VPC
+  NATRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NATGateway
+  PrivateSubnetOneRouteTableAssociation:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      SubnetId: !Ref PrivateSubnetOne
+  PrivateSubnetTwoRouteTableAssociation:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      SubnetId: !Ref PrivateSubnetTwo
+  PrivateSubnetThreeRouteTableAssociation:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      SubnetId: !Ref PrivateSubnetThree
+  S3VPCEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      ServiceName: !Sub com.amazonaws.${AWS::Region}.s3
+      RouteTableIds:
+        - !Ref PrivateRouteTable
+      VpcEndpointType: Gateway
+      VpcId: !Ref VPC
+  KafkaClientInstanceSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Enable SSH access via port 22
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: !Ref SSHLocation
+  MSKSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Enable KafkaClientEC2Instance access to MSK Cluster
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 2181
+          ToPort: 2181
+          SourceSecurityGroupId: !GetAtt 
+            - KafkaClientInstanceSecurityGroup
+            - GroupId
+        - IpProtocol: tcp
+          FromPort: 2182
+          ToPort: 2182
+          SourceSecurityGroupId: !GetAtt 
+            - KafkaClientInstanceSecurityGroup
+            - GroupId
+        - IpProtocol: tcp
+          FromPort: 9092
+          ToPort: 9092
+          SourceSecurityGroupId: !GetAtt 
+            - KafkaClientInstanceSecurityGroup
+            - GroupId
+        - IpProtocol: tcp
+          FromPort: 9094
+          ToPort: 9094
+          SourceSecurityGroupId: !GetAtt 
+            - KafkaClientInstanceSecurityGroup
+            - GroupId
+        - IpProtocol: tcp
+          FromPort: 9096
+          ToPort: 9096
+          SourceSecurityGroupId: !GetAtt 
+            - KafkaClientInstanceSecurityGroup
+            - GroupId
+        - IpProtocol: tcp
+          FromPort: 9098
+          ToPort: 9098
+          SourceSecurityGroupId: !GetAtt 
+            - KafkaClientInstanceSecurityGroup
+            - GroupId
+  MSKSecurityGroupIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref MSKSecurityGroup
+      IpProtocol: -1
+      FromPort: 0
+      ToPort: 65535
+      SourceSecurityGroupId: !Ref MSKSecurityGroup
+  KafkaClientEC2Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      InstanceType: m5.large
+      KeyName: !Ref KeyName
+      IamInstanceProfile: !Ref EC2InstanceProfile
+      AvailabilityZone: !Select 
+        - 0
+        - !GetAZs 
+          Ref: 'AWS::Region'
+      SubnetId: !Ref PublicSubnetOne
+      SecurityGroupIds:
+        - !GetAtt 
+          - KafkaClientInstanceSecurityGroup
+          - GroupId
+      ImageId: !FindInMap 
+        - RegionAMI
+        - !Ref 'AWS::Region'
+        - HVM64
+      Tags:
+        - Key: Name
+          Value: KafkaClientInstance
+      UserData: !Base64 >
+        #!/bin/bash
+
+        yum update -y 
+
+        sudo yum install java-1.8.0 -y
+
+        cd /home/ec2-user
+
+        echo "export PATH=.local/bin:$PATH" >> .bash_profile
+
+        mkdir kafka
+
+        cd kafka
+
+        wget https://archive.apache.org/dist/kafka/2.2.1/kafka_2.12-2.2.1.tgz
+
+        tar -xzf kafka_2.12-2.2.1.tgz
+
+        cd /home/ec2-user
+
+        chown -R ec2-user ./kafka
+
+        chgrp -R ec2-user ./kafka
+
+        cd /home/ec2-user/kafka/kafka_2.12-2.2.1/bin
+
+        echo "security.protocol=PLAINTEXT" > client.properties
+
+  EC2Role:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: ''
+            Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Path: /
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/AmazonMSKFullAccess'
+        - 'arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess'
+  EC2InstanceProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+      Roles:
+        - !Ref EC2Role
+  MSKConnectRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: ''
+            Effect: Allow
+            Principal:
+              Service: kafkaconnect.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Path: /
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/AmazonS3FullAccess'
+        - 'arn:aws:iam::aws:policy/aws-service-role/KafkaConnectServiceRolePolicy'
+  MSKCluster:
+    Type: 'AWS::MSK::Cluster'
+    Properties:
+      BrokerNodeGroupInfo:
+        ClientSubnets:
+          - !Ref PrivateSubnetOne
+          - !Ref PrivateSubnetTwo
+          - !Ref PrivateSubnetThree
+        InstanceType: kafka.m5.large
+        SecurityGroups:
+          - !GetAtt 
+            - MSKSecurityGroup
+            - GroupId
+        StorageInfo:
+          EBSStorageInfo:
+            VolumeSize: 1000
+      ClientAuthentication:
+        Unauthenticated:
+          Enabled: true
+      ClusterName:
+        !Sub
+          - 'MSKCluster-${RandomGUID}'
+          - { RandomGUID: !Select [0, !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId ]]]] }
+      EncryptionInfo:
+        EncryptionInTransit:
+          ClientBroker: PLAINTEXT
+      KafkaVersion: 2.2.1
+      LoggingInfo:
+        BrokerLogs:
+          CloudWatchLogs:
+            Enabled: true
+            LogGroup: !Ref MSKLogGroup
+      NumberOfBrokerNodes: 3
+Outputs:
+  S3BucketName:
+    Description: Name of the S3 Bucket created
+    Value: !Ref S3Bucket
+  VPCId:
+    Description: The ID of the VPC created
+    Value: !Ref VPC
+  PublicSubnetOne:
+    Description: The name of the public subnet created
+    Value: !Ref PublicSubnetOne
+  PrivateSubnetOne:
+    Description: The ID of private subnet one created
+    Value: !Ref PrivateSubnetOne
+  PrivateSubnetTwo:
+    Description: The ID of private subnet two created
+    Value: !Ref PrivateSubnetTwo
+  PrivateSubnetThree:
+    Description: The ID of private subnet three created
+    Value: !Ref PrivateSubnetThree
+  MSKSecurityGroupID:
+    Description: The ID of the security group created for the MSK cluster
+    Value: !GetAtt 
+      - MSKSecurityGroup
+      - GroupId
+  KafkaClientEC2InstancePublicDNS:
+    Description: The Public DNS for the EC2 instance
+    Value: !GetAtt 
+      - KafkaClientEC2Instance
+      - PublicDnsName
+  MSKClusterArn:
+    Description: The Arn for the MSK cluster
+    Value: !Ref MSKCluster
+  MSKLogGroupName:
+    Description: Name of the MSK LogGroup created
+    Value: !Ref MSKLogGroup
+  MSKConnectLogGroupName:
+    Description: Name of the MSK Connect LogGroup created
+    Value: !Ref MSKConnectLogGroup
