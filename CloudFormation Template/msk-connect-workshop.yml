@@ -333,7 +333,6 @@ Resources:
       Path: /
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/AmazonS3FullAccess'
-        - 'arn:aws:iam::aws:policy/aws-service-role/KafkaConnectServiceRolePolicy'
   MSKCluster:
     Type: 'AWS::MSK::Cluster'
     Properties:
