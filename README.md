@@ -199,7 +199,7 @@ In the left pane expand **MSK Connect**, then choose **Connectors**.
 <p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-3.png" width="90%"></p>
 <br>
 
-4. For the Connector configuration, paste the following values:
+4. For the Connector configuration, paste the following values and update the corresponding fields with `<--PLACEHOLDER-->` (e.g. **salesforce.username=abc@test.com**):
 ```
 connector.class=io.confluent.salesforce.SalesforcePushTopicSourceConnector
 salesforce.username=<--YOUR-SALESFORCE-USERNAME-->
@@ -216,7 +216,7 @@ salesforce.consumer.secret=<--YOUR-SALESFORCE-CONSUMER-SECRET-->
 salesforce.object=Lead
 ```
 
-For details on the configuration properties, refer to the [Salesforce Connector documentation](https://docs.confluent.io/kafka-connect-salesforce/current/overview.html)
+For details on the configuration properties, refer to the [Salesforce Connector documentation](https://docs.confluent.io/kafka-connect-salesforce/current/overview.html).
 
 5. For the Access permissions, choose the IAM role created by CloudFormation (e.g. **StackName**-MSKConnectRole-**RandomGUID**), and then click **Next**.
 
@@ -233,7 +233,15 @@ For details on the configuration properties, refer to the [Salesforce Connector 
 <p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-7.png" width="90%"></p>
 <br>
 
-8. Review and choose **Create connector**.
+8. Review and choose **Create connector**. Wait for a few minutes until the connector is successfully created.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-8.png" width="90%"></p>
+<br>
+
+9. You may scroll down to the bottom and find the logs of the connector in CloudWatch Logs. This will be very helpful for you to troubleshoot the MSK Connect connectors.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-9.png" width="90%"></p>
+<br>
 
 #### Test 
 
