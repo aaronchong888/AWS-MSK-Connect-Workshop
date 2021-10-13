@@ -15,6 +15,8 @@ The workshop is supported in the regions where the Amazon MSK Connect feature is
 - **US East (N. Virginia)** (us-east-1)
 - **Asia Pacific (Singapore)** (ap-southeast-1)
 
+> At the time of writing (13 Oct 2021), MSK Connect is available in the following [AWS Regions](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/#Regions): Asia Pacific (Mumbai), Asia Pacific (Seoul), Asia Pacific (Singapore), Asia Pacific (Sydney), Asia Pacific (Tokyo), Canada (Central), EU (Frankfurt), EU (Ireland), EU (London), EU (Paris), EU (Stockholm), South America (Sao Paulo), US East (N. Virginia), US East (Ohio), US West (N. California), US West (Oregon). For the lastest information, visit the [AWS Regional Services List](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/).
+
 ## Prerequisites
 
 Create an EC2 SSH Key Pair required in the Lab Setup part, so that you can login to the EC2 instance we will use in the lab.
@@ -40,7 +42,7 @@ Download the Salesforce Connector from Confluent:
 <p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step1-1.png" width="90%"></p>
 <br>
 
-2. Upload the ZIP file to the S3 bucket created by CloudFormation (e.g. mskconnect-bucket-**AWS-Account-ID**-**AWS-Region**-**Random**).
+2. Upload the ZIP file to the S3 bucket created by CloudFormation (e.g. mskconnect-bucket-**AccountId**-**Region**-**RandomGUID**).
 
 <p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step1-2.png" width="90%"></p>
 <br>
@@ -68,7 +70,7 @@ In the left pane expand **MSK Connect**, then choose **Custom plugins**.
 
 1. Open the Amazon MSK console at [https://console.aws.amazon.com/msk/](https://console.aws.amazon.com/msk/)
 
-Choose the MSK Cluster created by CloudFormation (e.g. MSKCluster-**Random**), then click on **View client information**.
+Choose the MSK Cluster created by CloudFormation (e.g. MSKCluster-**RandomGUID**), then click on **View client information**.
 
 <p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step2-1.png" width="90%"></p>
 <br>
@@ -142,7 +144,7 @@ In the left pane expand **MSK Connect**, then choose **Connectors**.
 <p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-2.png" width="90%"></p>
 <br>
 
-3. For the Connector name, enter **mskconnect-salesforce-connector**. Choose the **MSK cluster** type and select the MSK Cluster created by CloudFormation (e.g. MSKCluster-**Random**).
+3. For the Connector name, enter **mskconnect-salesforce-connector**. Choose the **MSK cluster** type and select the MSK Cluster created by CloudFormation (e.g. MSKCluster-**RandomGUID**).
 
 <p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-3.png" width="90%"></p>
 <br>
@@ -166,7 +168,7 @@ salesforce.object=Lead
 
 For details on the configuration properties, refer to the [Salesforce Connector documentation](https://docs.confluent.io/kafka-connect-salesforce/current/overview.html)
 
-5. For the Access permissions, choose the IAM role created by CloudFormation (e.g. **stackName**-MSKConnectRole-**Random**), and then click **Next**.
+5. For the Access permissions, choose the IAM role created by CloudFormation (e.g. **StackName**-MSKConnectRole-**RandomGUID**), and then click **Next**.
 
 <p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-5.png" width="90%"></p>
 <br>
@@ -176,7 +178,7 @@ For details on the configuration properties, refer to the [Salesforce Connector 
 <p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-6.png" width="90%"></p>
 <br>
 
-7. For Logs, choose **Deliver to Amazon CloudWatch Logs** and **Browse** to search for the log group created for MSK Connect by CloudFormation (e.g. **stackName**-MSKConnectLogGroup-**Random**), and then click **Next**.
+7. For Logs, choose **Deliver to Amazon CloudWatch Logs** and **Browse** to search for the log group created for MSK Connect by CloudFormation (e.g. **StackName**-MSKConnectLogGroup-**RandomGUID**), and then click **Next**.
 
 <p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-7.png" width="90%"></p>
 <br>
