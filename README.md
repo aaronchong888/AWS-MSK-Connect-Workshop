@@ -257,7 +257,7 @@ For details on the configuration properties, refer to the [Salesforce Connector 
 <p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step5-1.png" width="90%"></p>
 <br>
 
-2. In the previous SSH EC2 Client, run the following command to subscribe to the topic **mskconnect-salesforce-topic**, replacing **BootstrapBrokerString** with the value that you saved when you viewed the cluster's client information.
+2. In the previous SSH session of the EC2 Client, run the following command to subscribe to the topic **mskconnect-salesforce-topic**, replacing **BootstrapBrokerString** with the value that you saved when you viewed the cluster's client information.
 
 ```
 kafka/kafka_2.12-2.2.1/bin/kafka-console-consumer.sh --bootstrap-server <BootstrapBrokerString> --topic mskconnect-salesforce-topic --from-beginning
@@ -275,3 +275,69 @@ kafka/kafka_2.12-2.2.1/bin/kafka-console-consumer.sh --bootstrap-server <Bootstr
 ## Clean Up
 
 Follow the instructions below to clean up the workshop environment.
+
+1. First we will need to clean up the created S3 bucket. Note that this step will delete all the data stored in the S3 bucket. Open the Amazon S3 console at [https://console.aws.amazon.com/s3/](https://console.aws.amazon.com/s3/)
+
+Search for **mskconnect** in the search box, select the target bucket (e.g. mskconnect-bucket-**AccountId**-**Region**-**RandomGUID**) and click the **Empty** button on the top right.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-1.png" width="90%"></p>
+<br>
+
+2. On the **Empty Bucket** screen, type **permanently delete** to confirm deletion and click **Empty**.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-2.png" width="90%"></p>
+<br>
+
+3. You should see a confirmation that the S3 bucket is successfully emptied.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-3.png" width="90%"></p>
+<br>
+
+4. Next we will delete the MSK Connect connectors that we created previously. Open the Amazon MSK console at [https://console.aws.amazon.com/msk/](https://console.aws.amazon.com/msk/)
+
+In the left pane choose **Connectors** under **MSK Connect**, select the target Connector to be deleted (e.g. **mskconnect-salesforce-connector**) and click the **Delete** button on the top right.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-4.png" width="90%"></p>
+<br>
+
+5. Confirm deletion by typing in the connector name (e.g. **mskconnect-salesforce-connector**) and click **Delete**.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-5.png" width="90%"></p>
+<br>
+
+6. You should see a confirmation that the connector is successfully deleted. Repeat the steps to delete all the connectors.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-6.png" width="90%"></p>
+<br>
+
+7. Finally we will delete the CloudFormation stack to clean up all the related resources created in the workshop. Open the AWS CloudFormation console at [https://console.aws.amazon.com/cloudformation/](https://console.aws.amazon.com/cloudformation/)
+
+Select the CloudFormation stack that you have created during the Lab Setup section (e.g. **mskconnect-workshop**), click the **Delete** button to the top right.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-7.png" width="90%"></p>
+<br>
+
+8. Confirm deletion by clicking **Delete stack**.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-8.png" width="90%"></p>
+<br>
+
+9. You should see that the stack deletion is initiated now. Once the stack is deleted, it will disappear from the stack list. You may refresh the page by clicking the refresh button.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-9.png" width="90%"></p>
+<br>
+
+**The above steps should clean up all the resources that we have previously provisioned in the MSK Connect Workshop.**
+
+## Authors
+
+* **Aaron Chong** - [aaronchong888](https://github.com/aaronchong888)
+
+## Acknowledgments
+
+This workshop is built referencing the AWS Developer Guides, AWS Blog, and other AWS workshop contents listed below:
+- [Amazon MSK Developer Guide](https://docs.aws.amazon.com/msk/latest/developerguide/what-is-msk.html)
+- [AWS CloudFormation User Guide](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/AWS_MSK.html)
+- [Introducing Amazon MSK Connect – Stream Data to and from Your Apache Kafka Clusters Using Managed Connectors](https://aws.amazon.com/blogs/aws/introducing-amazon-msk-connect-stream-data-to-and-from-your-apache-kafka-clusters-using-managed-connectors/)
+- [Amazon AppFlow Workshop](https://appflow-immersionday.workshop.aws/en/)
+- [Amazon MSK Labs](https://amazonmsk-labs.workshop.aws/en/)
