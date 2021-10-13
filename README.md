@@ -5,9 +5,9 @@ Welcome to the Amazon MSK Connect Workshop. [Amazon MSK Connect](https://aws.ama
 The workshop is divided into multiple modules. Each module targets a specific connector.
 
 ### Costs
-Some of the labs in the workshop will require you to create resources in your AWS cloud account. This will incur costs that may not be covered in AWS free tier. We recommend that you clean up the resources once you are finished with the lab to stop incurring any additional charges. 
+Some of the labs in the workshop will require you to create resources in your AWS cloud account. This will incur costs that may not be covered in AWS free tier. We recommend that you clean up the resources once you are finished with the workshop to stop incurring any additional charges. 
 
-> To be updated: instructions to clean up the resources created within the labs
+You may refer to the **Clean Up** section for the instructions to clean up the resources created within the workshop.
 
 ### Regions
 The workshop is supported in the regions where the Amazon MSK Connect feature is available. Workshop has been tested in following regions.
@@ -66,19 +66,21 @@ Choose a region where the Amazon MSK Connect feature is available (e.g. **us-eas
 
 10. Leave the default settings on the step **Configure stack options** and click **Next**.
 
-11. Scroll down to the bottom of the **Review mskconnect-workshop** screen and check the box to acknowlewdge the creation of IAM resources. Click **Create stack** to trigger the creation of the CloudFormation stack.
+11. Scroll down to the bottom of the **Review mskconnect-workshop** screen and check the box to acknowledge the creation of IAM resources. Click **Create stack** to trigger the creation of the CloudFormation stack.
 
 <p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step0-11.png" width="90%"></p>
 <br>
 
-12. Wait until the stack creation is completed before proceeding to the next steps. It may take a while for the MSK cluster creation (~15 to 30mins).
+12. Wait until the stack creation is completed before proceeding to the next steps. It may take a while for the MSK cluster creation (~30 to 45mins).
 
 <p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step0-12.png" width="90%"></p>
 <br>
 
-## Salesforce Connector
+## Source Connectors
 
-### Create custom plugin
+### Salesforce
+
+#### Create custom plugin
 
 Download the Salesforce Connector from Confluent: 
 [https://www.confluent.io/hub/confluentinc/kafka-connect-salesforce](https://www.confluent.io/hub/confluentinc/kafka-connect-salesforce)
@@ -114,7 +116,7 @@ In the left pane expand **MSK Connect**, then choose **Custom plugins**.
 <p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step1-6.png" width="90%"></p>
 <br>
 
-### Create Apache Kakfa topic
+#### Create Apache Kakfa topic
 
 1. Open the Amazon MSK console at [https://console.aws.amazon.com/msk/](https://console.aws.amazon.com/msk/)
 
@@ -151,7 +153,7 @@ If the command succeeds, you should see the message: **Created topic mskconnect-
 <p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step2-5.png" width="90%"></p>
 <br>
 
-### Salesforce Setup
+#### Salesforce Setup
 
 1. Go to [https://developer.Salesforce.com/signup](https://developer.Salesforce.com/signup) and register for a trial of the Developer Edition account in Salesforce.
 
@@ -178,7 +180,7 @@ If the command succeeds, you should see the message: **Created topic mskconnect-
 <p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step3-5.png" width="90%"></p>
 <br>
 
-### Create connector
+#### Create connector
 
 1. Open the Amazon MSK console at [https://console.aws.amazon.com/msk/](https://console.aws.amazon.com/msk/)
 
@@ -233,7 +235,7 @@ For details on the configuration properties, refer to the [Salesforce Connector 
 
 8. Review and choose **Create connector**.
 
-### Test 
+#### Test 
 
 1. Create a new Lead in Salesforce to generate test data
 
@@ -243,10 +245,12 @@ For details on the configuration properties, refer to the [Salesforce Connector 
 kafka/kafka_2.12-2.2.1/bin/kafka-console-consumer.sh --bootstrap-server <BootstrapBrokerString> --topic mskconnect-salesforce-topic --from-beginning
 ```
 
-### Clean Up
+## Sink Connectors
 
-1. To be Updated
-
-## Amazon S3 Sink Connector
+### Amazon S3
 
 [Follow the steps on the MSK Conect Doc](https://docs.aws.amazon.com/msk/latest/developerguide/mkc-create-plugin.html)
+
+## Clean Up
+
+Follow the instructions below to clean up the workshop environment.

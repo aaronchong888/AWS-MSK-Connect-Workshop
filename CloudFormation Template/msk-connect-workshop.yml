@@ -16,13 +16,13 @@ Mappings:
   SubnetConfig:
     VPC:
       CIDR: 10.0.0.0/16
-    PublicOne:
+    Public01:
       CIDR: 10.0.0.0/24
-    PrivateOne:
+    Private01:
       CIDR: 10.0.1.0/24
-    PrivateTwo:
+    Private02:
       CIDR: 10.0.2.0/24
-    PrivateThree:
+    Private03:
       CIDR: 10.0.3.0/24
   RegionAMI:
     us-east-1:
@@ -85,7 +85,7 @@ Resources:
       Tags:
         - Key: Name
           Value: MSKVPC
-  PublicSubnetOne:
+  PublicSubnet01:
     Type: 'AWS::EC2::Subnet'
     Properties:
       AvailabilityZone: !Select 
@@ -95,13 +95,13 @@ Resources:
       VpcId: !Ref VPC
       CidrBlock: !FindInMap 
         - SubnetConfig
-        - PublicOne
+        - Public01
         - CIDR
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
           Value: MSKPublicSubnet
-  PrivateSubnetOne:
+  PrivateSubnet01:
     Type: 'AWS::EC2::Subnet'
     Properties:
       AvailabilityZone: !Select 
@@ -111,12 +111,12 @@ Resources:
       VpcId: !Ref VPC
       CidrBlock: !FindInMap 
         - SubnetConfig
-        - PrivateOne
+        - Private01
         - CIDR
       Tags:
         - Key: Name
-          Value: MSKPrivateSubnetOne
-  PrivateSubnetTwo:
+          Value: MSKPrivateSubnet01
+  PrivateSubnet02:
     Type: 'AWS::EC2::Subnet'
     Properties:
       AvailabilityZone: !Select 
@@ -126,12 +126,12 @@ Resources:
       VpcId: !Ref VPC
       CidrBlock: !FindInMap 
         - SubnetConfig
-        - PrivateTwo
+        - Private02
         - CIDR
       Tags:
         - Key: Name
-          Value: MSKPrivateSubnetTwo
-  PrivateSubnetThree:
+          Value: MSKPrivateSubnet02
+  PrivateSubnet03:
     Type: 'AWS::EC2::Subnet'
     Properties:
       AvailabilityZone: !Select 
@@ -141,11 +141,11 @@ Resources:
       VpcId: !Ref VPC
       CidrBlock: !FindInMap 
         - SubnetConfig
-        - PrivateThree
+        - Private03
         - CIDR
       Tags:
         - Key: Name
-          Value: MSKPrivateSubnetThree
+          Value: MSKPrivateSubnet03
   InternetGateway:
     Type: 'AWS::EC2::InternetGateway'
   GatewayAttachement:
@@ -164,10 +164,10 @@ Resources:
       RouteTableId: !Ref PublicRouteTable
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref InternetGateway
-  PublicSubnetOneRouteTableAssociation:
+  PublicSubnet01RouteTableAssociation:
     Type: 'AWS::EC2::SubnetRouteTableAssociation'
     Properties:
-      SubnetId: !Ref PublicSubnetOne
+      SubnetId: !Ref PublicSubnet01
       RouteTableId: !Ref PublicRouteTable
   NATGatewayEIP:
     Type: AWS::EC2::EIP
@@ -180,7 +180,7 @@ Resources:
       AllocationId: !GetAtt 
         - NATGatewayEIP
         - AllocationId
-      SubnetId: !Ref PublicSubnetOne
+      SubnetId: !Ref PublicSubnet01
   PrivateRouteTable:
     Type: 'AWS::EC2::RouteTable'
     Properties:
@@ -191,21 +191,21 @@ Resources:
       RouteTableId: !Ref PrivateRouteTable
       DestinationCidrBlock: 0.0.0.0/0
       NatGatewayId: !Ref NATGateway
-  PrivateSubnetOneRouteTableAssociation:
+  PrivateSubnet01RouteTableAssociation:
     Type: 'AWS::EC2::SubnetRouteTableAssociation'
     Properties:
       RouteTableId: !Ref PrivateRouteTable
-      SubnetId: !Ref PrivateSubnetOne
-  PrivateSubnetTwoRouteTableAssociation:
+      SubnetId: !Ref PrivateSubnet01
+  PrivateSubnet02RouteTableAssociation:
     Type: 'AWS::EC2::SubnetRouteTableAssociation'
     Properties:
       RouteTableId: !Ref PrivateRouteTable
-      SubnetId: !Ref PrivateSubnetTwo
-  PrivateSubnetThreeRouteTableAssociation:
+      SubnetId: !Ref PrivateSubnet02
+  PrivateSubnet03RouteTableAssociation:
     Type: 'AWS::EC2::SubnetRouteTableAssociation'
     Properties:
       RouteTableId: !Ref PrivateRouteTable
-      SubnetId: !Ref PrivateSubnetThree
+      SubnetId: !Ref PrivateSubnet03
   S3VPCEndpoint:
     Type: AWS::EC2::VPCEndpoint
     Properties:
@@ -284,7 +284,7 @@ Resources:
         - 0
         - !GetAZs 
           Ref: 'AWS::Region'
-      SubnetId: !Ref PublicSubnetOne
+      SubnetId: !Ref PublicSubnet01
       SecurityGroupIds:
         - !GetAtt 
           - KafkaClientInstanceSecurityGroup
@@ -364,9 +364,9 @@ Resources:
     Properties:
       BrokerNodeGroupInfo:
         ClientSubnets:
-          - !Ref PrivateSubnetOne
-          - !Ref PrivateSubnetTwo
-          - !Ref PrivateSubnetThree
+          - !Ref PrivateSubnet01
+          - !Ref PrivateSubnet02
+          - !Ref PrivateSubnet03
         InstanceType: kafka.m5.large
         SecurityGroups:
           - !GetAtt 
@@ -399,18 +399,18 @@ Outputs:
   VPCId:
     Description: The ID of the VPC created
     Value: !Ref VPC
-  PublicSubnetOne:
+  PublicSubnet01:
     Description: The name of the public subnet created
-    Value: !Ref PublicSubnetOne
-  PrivateSubnetOne:
-    Description: The ID of private subnet one created
-    Value: !Ref PrivateSubnetOne
-  PrivateSubnetTwo:
-    Description: The ID of private subnet two created
-    Value: !Ref PrivateSubnetTwo
-  PrivateSubnetThree:
-    Description: The ID of private subnet three created
-    Value: !Ref PrivateSubnetThree
+    Value: !Ref PublicSubnet01
+  PrivateSubnet01:
+    Description: The ID of private subnet 01 created
+    Value: !Ref PrivateSubnet01
+  PrivateSubnet02:
+    Description: The ID of private subnet 02 created
+    Value: !Ref PrivateSubnet02
+  PrivateSubnet03:
+    Description: The ID of private subnet 03 created
+    Value: !Ref PrivateSubnet03
   MSKSecurityGroupID:
     Description: The ID of the security group created for the MSK cluster
     Value: !GetAtt 
