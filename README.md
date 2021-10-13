@@ -218,7 +218,8 @@ salesforce.object=Lead
 
 For details on the configuration properties, refer to the [Salesforce Connector documentation](https://docs.confluent.io/kafka-connect-salesforce/current/overview.html).
 
-> **salesforce.initial.start**
+> *salesforce.initial.start*
+>
 > Specify the initial starting point for the connector for replaying events. Use **all** to send a replayId of -2 to Salesforce that replays all events from last 24 hours, or use **latest** to send a replayId of -1 to Salesforce that plays only new incoming events that arrive after the connector has started. The default is **latest** in case there are more enqueued events than might be allowed by API limits.
 
 5. For the Access permissions, choose the IAM role created by CloudFormation (e.g. **StackName**-MSKConnectRole-**RandomGUID**), and then click **Next**.
