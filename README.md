@@ -220,7 +220,10 @@ For details on the configuration properties, refer to the [Salesforce Connector 
 
 > *salesforce.initial.start*
 >
-> Specify the initial starting point for the connector for replaying events. Use **all** to send a replayId of -2 to Salesforce that replays all events from last 24 hours, or use **latest** to send a replayId of -1 to Salesforce that plays only new incoming events that arrive after the connector has started. The default is **latest** in case there are more enqueued events than might be allowed by API limits.
+> Specify the initial starting point for the connector for replaying events. Use **all** to send a replayId of -2 to Salesforce that replays all events from last 24 hours, or use **latest** to send a replayId of -1 to Salesforce that plays only new incoming events that arrive after the connector has started. 
+>
+>The default is **latest** in case there are more enqueued events than might be allowed by API limits.
+<br>
 
 5. For the Access permissions, choose the IAM role created by CloudFormation (e.g. **StackName**-MSKConnectRole-**RandomGUID**), and then click **Next**.
 
@@ -249,13 +252,19 @@ For details on the configuration properties, refer to the [Salesforce Connector 
 
 #### Test 
 
-1. Create a new Lead in Salesforce to generate test data
+1. Login to your Salesforce Developer account and search for **Leads** in the search box. Click on **New** to create a new Lead in Salesforce to generate some test data.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step5-1.png" width="90%"></p>
+<br>
 
 2. In the previous SSH EC2 Client, run the following command to subscribe to the topic **mskconnect-salesforce-topic**, replacing **BootstrapBrokerString** with the value that you saved when you viewed the cluster's client information.
 
 ```
 kafka/kafka_2.12-2.2.1/bin/kafka-console-consumer.sh --bootstrap-server <BootstrapBrokerString> --topic mskconnect-salesforce-topic --from-beginning
 ```
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step5-2.png" width="90%"></p>
+<br>
 
 ## Sink Connectors
 
