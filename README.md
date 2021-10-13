@@ -17,16 +17,64 @@ The workshop is supported in the regions where the Amazon MSK Connect feature is
 
 > At the time of writing (13 Oct 2021), MSK Connect is available in the following [AWS Regions](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/#Regions): Asia Pacific (Mumbai), Asia Pacific (Seoul), Asia Pacific (Singapore), Asia Pacific (Sydney), Asia Pacific (Tokyo), Canada (Central), EU (Frankfurt), EU (Ireland), EU (London), EU (Paris), EU (Stockholm), South America (Sao Paulo), US East (N. Virginia), US East (Ohio), US West (N. California), US West (Oregon). For the lastest information, visit the [AWS Regional Services List](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/).
 
-## Prerequisites
-
-Create an EC2 SSH Key Pair required in the Lab Setup part, so that you can login to the EC2 instance we will use in the lab.
-[Follow the steps on this link to create an EC2 SSH Key Pair](https://amazonmsk-labs.workshop.aws/en/prerequisites/prerequisites.html)
-
 ## Lab Setup
 
-Download the CloudFormation template provided in the repo: [msk-connect-workshop.yml](https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/CloudFormation%20Template/msk-connect-workshop.yml)
+### Create an EC2 SSH Key Pair for logging into the EC2 instance we will use in the workshop
 
-Navigate to AWS Cloudformation in AWS console and create the stack.
+1. Open the Amazon EC2 console at [https://console.aws.amazon.com/ec2/](https://console.aws.amazon.com/ec2/)
+
+Choose a region where the Amazon MSK Connect feature is available (e.g. **us-east-1**), this will be the region that you are using for the workshop.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step0-1.png" width="90%"></p>
+<br>
+
+2. Choose **Key Pairs** in the navigation bar on the left, and click on **Create key pair**.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step0-2.png" width="90%"></p>
+<br>
+
+3. Provide a name for the key pair (e.g. **mskconnect-workshop-keypair**), and click on **Create key pair**.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step0-3.png" width="90%"></p>
+<br>
+
+4. You should see the message **Successfully created key pair**, and confirm the download of the generated **.pem** file to your local machine.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step0-4.png" width="90%"></p>
+<br>
+
+### Deploy required AWS resources via CloudFormation
+
+5. Download the CloudFormation template provided in the repo: [msk-connect-workshop.yml](https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/CloudFormation%20Template/msk-connect-workshop.yml)
+
+6. Open the AWS CloudFormation console at [https://console.aws.amazon.com/cloudformation/](https://console.aws.amazon.com/cloudformation/)
+
+7. Click on **Create stack** and select **With new resources (standard)**.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step0-7.png" width="90%"></p>
+<br>
+
+8. Choose **Upload a template file** option and upload the CloudFormation template from your local machine, then click **Next**.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step0-8.png" width="90%"></p>
+<br>
+
+9. Enter **mskconnect-workshop** as the stack name, choose the **mskconnect-workshop-keypair** under **KeyName**, and then click **Next**.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step0-9.png" width="90%"></p>
+<br>
+
+10. Leave the default settings on the step **Configure stack options** and click **Next**.
+
+11. Scroll down to the bottom of the **Review mskconnect-workshop** screen and check the box to acknowlewdge the creation of IAM resources. Click **Create stack** to trigger the creation of the CloudFormation stack.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step0-11.png" width="90%"></p>
+<br>
+
+12. Wait until the stack creation is completed before proceeding to the next steps. It may take a while for the MSK cluster creation (~15 to 30mins).
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step0-12.png" width="90%"></p>
+<br>
 
 ## Salesforce Connector
 
@@ -194,6 +242,10 @@ For details on the configuration properties, refer to the [Salesforce Connector 
 ```
 kafka/kafka_2.12-2.2.1/bin/kafka-console-consumer.sh --bootstrap-server <BootstrapBrokerString> --topic mskconnect-salesforce-topic --from-beginning
 ```
+
+### Clean Up
+
+1. To be Updated
 
 ## Amazon S3 Sink Connector
 
