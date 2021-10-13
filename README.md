@@ -7,7 +7,7 @@ The workshop is divided into multiple modules. Each module targets a specific co
 ### Costs
 Some of the labs in the workshop will require you to create resources in your AWS cloud account. This will incur costs that may not be covered in AWS free tier. We recommend that you clean up the resources once you are finished with the workshop to stop incurring any additional charges. 
 
-You may refer to the **Clean Up** section for the instructions to clean up the resources created within the workshop.
+You may refer to the [Clean Up](https://github.com/aaronchong888/AWS-MSK-Connect-Workshop#clean-up) section for the instructions to clean up the resources created within the workshop.
 
 ### Regions
 The workshop is supported in the regions where the Amazon MSK Connect feature is available. Workshop has been tested in following regions.
@@ -19,7 +19,7 @@ The workshop is supported in the regions where the Amazon MSK Connect feature is
 
 ## Lab Setup
 
-### Create an EC2 SSH Key Pair for logging into the EC2 instance we will use in the workshop
+#### Create an EC2 SSH Key Pair for logging into the EC2 instance we will use in the workshop
 
 1. Open the Amazon EC2 console at [https://console.aws.amazon.com/ec2/](https://console.aws.amazon.com/ec2/)
 
@@ -43,7 +43,7 @@ Choose a region where the Amazon MSK Connect feature is available (e.g. **us-eas
 <p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step0-4.png" width="90%"></p>
 <br>
 
-### Deploy required AWS resources via CloudFormation
+#### Deploy required AWS resources via CloudFormation
 
 5. Download the CloudFormation template provided in the repo: [msk-connect-workshop.yml](https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/CloudFormation%20Template/msk-connect-workshop.yml)
 
