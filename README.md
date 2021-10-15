@@ -27,7 +27,7 @@ The workshop is supported in the regions where the Amazon MSK Connect feature is
 
 Choose a region where the Amazon MSK Connect feature is available (e.g. **us-east-1**), this will be the region that you are using for the workshop.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/labsetup-01.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/setup-01.png" width="90%"></p>
 <br>
 
 2. Choose **Key Pairs** in the navigation bar on the left, and click on **Create key pair**.
@@ -105,31 +105,31 @@ Download the Salesforce Connector from Confluent:
 
 1. Click and download the ZIP file:
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step1-1.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-01.png" width="90%"></p>
 <br>
 
 2. Upload the ZIP file to the S3 bucket created by CloudFormation (e.g. mskconnect-bucket-**AccountId**-**Region**-**RandomGUID**).
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step1-2.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-02.png" width="90%"></p>
 <br>
 
 3. Open the Amazon MSK console at [https://console.aws.amazon.com/msk/](https://console.aws.amazon.com/msk/)
 
 In the left pane expand **MSK Connect**, then choose **Custom plugins**.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step1-3.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-03.png" width="90%"></p>
 <br>
 
 4. Choose **Create custom plugin**, and choose the ZIP file uploaded in Step 2.
 
 5. Enter **salesforce-connector-plugin** for the custom plugin name, then choose **Create custom plugin**.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step1-5.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-04.png" width="90%"></p>
 <br>
 
 6. Wait for a few minutes for the creation process to complete. You should see the following message in a banner at the top of the browser window when completed.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step1-6.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-05.png" width="90%"></p>
 <br>
 
 #### Create Apache Kakfa topic
@@ -138,24 +138,24 @@ In the left pane expand **MSK Connect**, then choose **Custom plugins**.
 
 Choose the MSK Cluster created by CloudFormation (e.g. MSKCluster-**RandomGUID**), then click on **View client information**.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step2-1.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-06.png" width="90%"></p>
 <br>
 
 2. Copy the **Bootstrap servers** and **Apache ZooKeeper connection** strings, you will need to use them in the later steps.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step2-2.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-07.png" width="90%"></p>
 <br>
 
 3. Open the Amazon EC2 console at [https://console.aws.amazon.com/ec2/](https://console.aws.amazon.com/ec2/)
 
 Find the EC2 instance named **KafkaClientInstance**, right-click on it and choose **Connect**.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step2-3.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-08.png" width="90%"></p>
 <br>
 
 4. Go to the **SSH client** tab and follow the instructions to ssh into the EC2 instance.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step2-4.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-09.png" width="90%"></p>
 <br>
 
 5. Run the following command on the EC2 instance, replacing **ZookeeperConnectString** with the value that you saved when you viewed the cluster's client information.
@@ -166,34 +166,34 @@ kafka/kafka_2.12-2.2.1/bin/kafka-topics.sh --create --zookeeper <ZookeeperConnec
 
 If the command succeeds, you should see the message: **Created topic mskconnect-salesforce-topic.**
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step2-5.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-10.png" width="90%"></p>
 <br>
 
 #### Salesforce Setup
 
 1. Go to [https://developer.Salesforce.com/signup](https://developer.Salesforce.com/signup) and register for a trial of the Developer Edition account in Salesforce.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step3-1.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-11.png" width="90%"></p>
 <br>
 
 2. Create a new **Connected App** in Salesforce. Go to **Setup**, search for **App Manager** in the search box. Click the **App Manager** under **Apps**, and then click the **New Connected App** button to set up a new API client.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step3-2.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-12.png" width="90%"></p>
 <br>
 
 3. Enable the OAuth settings. For testing purpose, provide full API access:
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step3-3.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-13.png" width="90%"></p>
 <br>
 
 4. Copy the Consumer Key and Consumer Secret, you will need to use them in the later steps.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step3-4.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-14.png" width="90%"></p>
 <br>
 
 5. Click on the Profile icon and go to the **Settings**. Choose **Reset My Security Token** to generate a new security token, it will be sent to your email address.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step3-5.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-15.png" width="90%"></p>
 <br>
 
 #### Create connector
@@ -202,17 +202,17 @@ If the command succeeds, you should see the message: **Created topic mskconnect-
 
 In the left pane expand **MSK Connect**, then choose **Connectors**.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-1.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-16.png" width="90%"></p>
 <br>
 
 2. Click **Create connector**, and choose the **salesforce-connector-plugin**, and then click **Next**.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-2.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-17.png" width="90%"></p>
 <br>
 
 3. For the Connector name, enter **mskconnect-salesforce-connector**. Choose the **MSK cluster** type and select the MSK Cluster created by CloudFormation (e.g. MSKCluster-**RandomGUID**).
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-3.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-18.png" width="90%"></p>
 <br>
 
 4. For the Connector configuration, paste the following values and update the corresponding fields with `<--PLACEHOLDER-->` (e.g. **salesforce.username=abc@test.com**):
@@ -243,34 +243,34 @@ For details on the configuration properties, refer to the [Salesforce Connector 
 
 5. For the Access permissions, choose the IAM role created by CloudFormation (e.g. **StackName**-MSKConnectRole-**RandomGUID**), and then click **Next**.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-5.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-19.png" width="90%"></p>
 <br>
 
 6. Keep the default settings on Security, then click **Next**.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-6.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-20.png" width="90%"></p>
 <br>
 
 7. For Logs, choose **Deliver to Amazon CloudWatch Logs** and **Browse** to search for the log group created for MSK Connect by CloudFormation (e.g. **StackName**-MSKConnectLogGroup-**RandomGUID**), and then click **Next**.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-7.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-21.png" width="90%"></p>
 <br>
 
 8. Review and choose **Create connector**. Wait for a few minutes until the connector is successfully created.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-8.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-22.png" width="90%"></p>
 <br>
 
 9. You may scroll down to the bottom and find the logs of the connector in CloudWatch Logs. This will be very helpful for you to troubleshoot the MSK Connect connectors.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step4-9.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-23.png" width="90%"></p>
 <br>
 
 #### Test 
 
 1. Login to your Salesforce Developer account and search for **Leads** in the search box. Click on **New** to create a new Lead in Salesforce to generate some test data.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step5-1.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-24.png" width="90%"></p>
 <br>
 
 2. In the previous SSH session of the EC2 Client, run the following command to subscribe to the topic **mskconnect-salesforce-topic**, replacing **BootstrapBrokerString** with the value that you saved when you viewed the cluster's client information.
@@ -279,7 +279,7 @@ For details on the configuration properties, refer to the [Salesforce Connector 
 kafka/kafka_2.12-2.2.1/bin/kafka-console-consumer.sh --bootstrap-server <BootstrapBrokerString> --topic mskconnect-salesforce-topic --from-beginning
 ```
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step5-2.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/source-salesforce-25.png" width="90%"></p>
 <br>
 
 ## Sink Connectors
