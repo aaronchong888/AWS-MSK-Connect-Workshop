@@ -17,6 +17,8 @@ The workshop is supported in the regions where the Amazon MSK Connect feature is
 
 > At the time of writing (13 Oct 2021), MSK Connect is available in the following [AWS Regions](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/#Regions): Asia Pacific (Mumbai), Asia Pacific (Seoul), Asia Pacific (Singapore), Asia Pacific (Sydney), Asia Pacific (Tokyo), Canada (Central), EU (Frankfurt), EU (Ireland), EU (London), EU (Paris), EU (Stockholm), South America (Sao Paulo), US East (N. Virginia), US East (Ohio), US West (N. California), US West (Oregon). For the lastest information, visit the [AWS Regional Services List](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/).
 
+<br>
+
 ## Lab Setup
 
 #### Create an EC2 SSH Key Pair for logging into the EC2 instance we will use in the workshop
@@ -87,6 +89,8 @@ The CloudFormation stack creates the following resources:
 - 1 MSK Cluster with 3 `kafka.m5.large` broker nodes configured with Apache Kafka version 2.2.1, and the required Security Group
 
 > Note that the encryption options are disabled in order to reduce the chance of errors in the workshop, this is not a best practice and you should not use the provided CloudFormtaion template in any Production environments
+
+<br>
 
 ## Source Connectors
 
@@ -284,6 +288,8 @@ kafka/kafka_2.12-2.2.1/bin/kafka-console-consumer.sh --bootstrap-server <Bootstr
 
 [Follow the steps on the MSK Conect Doc](https://docs.aws.amazon.com/msk/latest/developerguide/mkc-create-plugin.html)
 
+<br>
+
 ## Clean Up
 
 Follow the instructions below to clean up the workshop environment.
@@ -341,9 +347,13 @@ Select the CloudFormation stack that you have created during the Lab Setup secti
 
 **The above steps should clean up all the resources that we have previously provisioned in the MSK Connect Workshop.**
 
+<br>
+
 ## Authors
 
 * **Aaron Chong** - [aaronchong888](https://github.com/aaronchong888)
+
+<br>
 
 ## Acknowledgments
 
@@ -353,3 +363,5 @@ This workshop is built referencing the AWS Developer Guides, AWS Blog, and other
 - [Introducing Amazon MSK Connect – Stream Data to and from Your Apache Kafka Clusters Using Managed Connectors](https://aws.amazon.com/blogs/aws/introducing-amazon-msk-connect-stream-data-to-and-from-your-apache-kafka-clusters-using-managed-connectors/)
 - [Amazon AppFlow Workshop](https://appflow-immersionday.workshop.aws/en/)
 - [Amazon MSK Labs](https://amazonmsk-labs.workshop.aws/en/)
+
+<br>
