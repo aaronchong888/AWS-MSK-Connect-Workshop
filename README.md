@@ -10,7 +10,7 @@ Some of the labs in the workshop will require you to create resources in your AW
 You may refer to the [Clean Up](https://github.com/aaronchong888/AWS-MSK-Connect-Workshop#clean-up) section for the instructions to clean up the resources created within the workshop.
 
 ### Regions
-The workshop is supported in the regions where the Amazon MSK Connect feature is available. Workshop has been tested in following regions.
+The workshop is supported in the regions where the Amazon MSK Connect feature is available. Workshop content has been tested in the following regions:
 
 - **US East (N. Virginia)** (us-east-1)
 - **Asia Pacific (Singapore)** (ap-southeast-1)
@@ -88,7 +88,7 @@ The CloudFormation stack creates the following resources:
 - 1 `m5.large` EC2 instance with Java 1.8.0 and Apache Kafka version 2.2.1 installed, and the required Security Group, IAM Role, EC2 Instance Profile
 - 1 MSK Cluster with 3 `kafka.m5.large` broker nodes configured with Apache Kafka version 2.2.1, and the required Security Group
 
-> Note that the encryption options are disabled in order to reduce the chance of errors in the workshop, this is not a best practice and you should not use the provided CloudFormtaion template in any Production environments
+> Note that the encryption options are disabled in order to reduce the chance of errors in the workshop, this is not a best practice and you should not use the provided CloudFormation template in any Production environments
 
 <br>
 
@@ -238,7 +238,7 @@ For details on the configuration properties, refer to the [Salesforce Connector 
 >
 > Specify the initial starting point for the connector for replaying events. Use **all** to send a replayId of -2 to Salesforce that replays all events from last 24 hours, or use **latest** to send a replayId of -1 to Salesforce that plays only new incoming events that arrive after the connector has started. 
 >
->The default is **latest** in case there are more enqueued events than might be allowed by API limits.
+> The default is **latest** in case there are more enqueued events than might be allowed by API limits.
 <br>
 
 5. For the Access permissions, choose the IAM role created by CloudFormation (e.g. **StackName**-MSKConnectRole-**RandomGUID**), and then click **Next**.
@@ -286,8 +286,194 @@ kafka/kafka_2.12-2.2.1/bin/kafka-console-consumer.sh --bootstrap-server <Bootstr
 
 ### Amazon S3
 
-[Follow the steps on the MSK Conect Doc](https://docs.aws.amazon.com/msk/latest/developerguide/mkc-create-plugin.html)
+#### Create custom plugin
 
+Download the Amazon S3 Sink Connector from Confluent: 
+[https://www.confluent.io/hub/confluentinc/kafka-connect-s3](https://www.confluent.io/hub/confluentinc/kafka-connect-s3)
+
+> Please note that this connector is a Community Connector and is provided under the [Confluent Community License](https://www.confluent.io/confluent-community-license/).
+
+1. Click and download the ZIP file:
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-01.png" width="90%"></p>
+<br>
+
+2. Upload the ZIP file to the S3 bucket created by CloudFormation (e.g. mskconnect-bucket-**AccountId**-**Region**-**RandomGUID**).
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-02.png" width="90%"></p>
+<br>
+
+3. Open the Amazon MSK console at [https://console.aws.amazon.com/msk/](https://console.aws.amazon.com/msk/)
+
+In the left pane expand **MSK Connect**, then choose **Custom plugins**.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-03.png" width="90%"></p>
+<br>
+
+4. Choose **Create custom plugin**, and choose the ZIP file uploaded in Step 2.
+
+5. Enter **s3-sink-connector-plugin** for the custom plugin name, then choose **Create custom plugin**.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-04.png" width="90%"></p>
+<br>
+
+6. Wait for a few minutes for the creation process to complete. You should see the following message in a banner at the top of the browser window when completed.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-05.png" width="90%"></p>
+<br>
+
+#### Create Apache Kakfa topic
+
+1. Open the Amazon MSK console at [https://console.aws.amazon.com/msk/](https://console.aws.amazon.com/msk/)
+
+Choose the MSK Cluster created by CloudFormation (e.g. MSKCluster-**RandomGUID**), then click on **View client information**.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-06.png" width="90%"></p>
+<br>
+
+2. Copy the **Bootstrap servers** and **Apache ZooKeeper connection** strings, you will need to use them in the later steps.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-07.png" width="90%"></p>
+<br>
+
+3. Open the Amazon EC2 console at [https://console.aws.amazon.com/ec2/](https://console.aws.amazon.com/ec2/)
+
+Find the EC2 instance named **KafkaClientInstance**, right-click on it and choose **Connect**.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-08.png" width="90%"></p>
+<br>
+
+4. Go to the **SSH client** tab and follow the instructions to ssh into the EC2 instance.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-09.png" width="90%"></p>
+<br>
+
+5. Run the following command on the EC2 instance, replacing **ZookeeperConnectString** with the value that you saved when you viewed the cluster's client information.
+
+```
+kafka/kafka_2.12-2.2.1/bin/kafka-topics.sh --create --zookeeper <ZookeeperConnectString> --replication-factor 2 --partitions 1 --topic mskconnect-s3-sink-topic
+```
+
+If the command succeeds, you should see the message: **Created topic mskconnect-s3-sink-topic.**
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-10.png" width="90%"></p>
+<br>
+
+#### Create connector
+
+1. Open the Amazon MSK console at [https://console.aws.amazon.com/msk/](https://console.aws.amazon.com/msk/)
+
+In the left pane expand **MSK Connect**, then choose **Connectors**.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-11.png" width="90%"></p>
+<br>
+
+2. Click **Create connector**, and choose the **s3-sink-connector-plugin**, and then click **Next**.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-12.png" width="90%"></p>
+<br>
+
+3. For the Connector name, enter **mskconnect-s3-sink-connector**. Choose the **MSK cluster** type and select the MSK Cluster created by CloudFormation (e.g. MSKCluster-**RandomGUID**).
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-13.png" width="90%"></p>
+<br>
+
+4. For the Connector configuration, paste the following values and update the corresponding fields with `<--PLACEHOLDER-->` (e.g. **s3.region=us-east-1**):
+```
+connector.class=io.confluent.connect.s3.S3SinkConnector
+s3.region=<--YOUR-S3-BUCKET-REGION-->
+flush.size=1
+schema.compatibility=NONE
+tasks.max=1
+topics=mskconnect-s3-sink-topic
+format.class=io.confluent.connect.s3.format.json.JsonFormat
+partitioner.class=io.confluent.connect.storage.partitioner.DefaultPartitioner
+value.converter=org.apache.kafka.connect.storage.StringConverter
+storage.class=io.confluent.connect.s3.storage.S3Storage
+s3.bucket.name=<--YOUR-S3-BUCKET-NAME-->
+key.converter=org.apache.kafka.connect.storage.StringConverter
+```
+
+For details on the configuration properties, refer to the [Amazon S3 Sink Connector documentation](https://docs.confluent.io/kafka-connect-s3-sink/current/overview.html).
+
+> *flush.size*
+>
+> Number of records written to store before invoking file commits. 
+>
+> We specify `flush.size=1` in the workshop to showcase each console message produced in the next section will be written out as a new file in the S3 bucket.
+<br>
+
+5. For the Access permissions, choose the IAM role created by CloudFormation (e.g. **StackName**-MSKConnectRole-**RandomGUID**), and then click **Next**.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-14.png" width="90%"></p>
+<br>
+
+6. Keep the default settings on Security, then click **Next**.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-15.png" width="90%"></p>
+<br>
+
+7. For Logs, choose **Deliver to Amazon CloudWatch Logs** and **Browse** to search for the log group created for MSK Connect by CloudFormation (e.g. **StackName**-MSKConnectLogGroup-**RandomGUID**), and then click **Next**.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-16.png" width="90%"></p>
+<br>
+
+8. Review and choose **Create connector**. Wait for a few minutes until the connector is successfully created.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-17.png" width="90%"></p>
+<br>
+
+9. You may scroll down to the bottom and find the logs of the connector in CloudWatch Logs. This will be very helpful for you to troubleshoot the MSK Connect connectors.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-18.png" width="90%"></p>
+<br>
+
+#### Test 
+
+1. In the previous SSH session of the EC2 Client, run the following command to start the console Producer tool to publish messages from the console to the topic **mskconnect-s3-sink-topic**, replacing **BootstrapBrokerString** with the value that you saved when you viewed the cluster's client information.
+
+```
+kafka/kafka_2.12-2.2.1/bin/kafka-console-producer.sh --broker-list <BootstrapBrokerString> --producer.config kafka/kafka_2.12-2.2.1/bin/client.properties --topic mskconnect-s3-sink-topic
+```
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-19.png" width="90%"></p>
+<br>
+
+2. Type in any message that you would like to send, and then press Enter to send the line to your MSK cluster as a separate message. Feel free to repeat this step a few times to generate some testing messages.
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-20.png" width="90%"></p>
+<br>
+
+3. Open the Amazon S3 console at [https://console.aws.amazon.com/s3/](https://console.aws.amazon.com/s3/)
+
+You should see that a new folder **topics/** is created,
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-21.png" width="90%"></p>
+<br>
+
+Click into the **topics/** folder and you will find your topic **mskconnect-s3-sink-topic/**, 
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-22.png" width="90%"></p>
+<br>
+
+Click into the **mskconnect-s3-sink-topic/** folder and you will find the topic partitions (e.g. only 1 partition **partition=0/**), 
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-23.png" width="90%"></p>
+<br>
+
+Click into one of the partitions (e.g. **partition=0/**) folder and you will find your console messages saved as JSON files,
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-24.png" width="90%"></p>
+<br>
+
+Click into one of the JSON files (e.g. **mskconnect-s3-sink-topic+0+0000000000.json**), choose the **Query with S3 Select** option under **Object actions**:
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-25.png" width="90%"></p>
+<br>
+
+Click the **Run SQL query** button with both Input and Output settings set to **JSON** format, you should be able to see the message that you sent from the EC2 client instance:
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/sink-s3-26.png" width="90%"></p>
 <br>
 
 ## Clean Up
