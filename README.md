@@ -15,7 +15,7 @@ The workshop is supported in the regions where the Amazon MSK Connect feature is
 - **US East (N. Virginia)** (us-east-1)
 - **Asia Pacific (Singapore)** (ap-southeast-1)
 
-> At the time of writing (13 Oct 2021), MSK Connect is available in the following [AWS Regions](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/#Regions): Asia Pacific (Mumbai), Asia Pacific (Seoul), Asia Pacific (Singapore), Asia Pacific (Sydney), Asia Pacific (Tokyo), Canada (Central), EU (Frankfurt), EU (Ireland), EU (London), EU (Paris), EU (Stockholm), South America (Sao Paulo), US East (N. Virginia), US East (Ohio), US West (N. California), US West (Oregon). For the lastest information, visit the [AWS Regional Services List](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/).
+> At the time of writing (15 Oct 2021), MSK Connect is available in the following [AWS Regions](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/#Regions): Asia Pacific (Mumbai), Asia Pacific (Seoul), Asia Pacific (Singapore), Asia Pacific (Sydney), Asia Pacific (Tokyo), Canada (Central), EU (Frankfurt), EU (Ireland), EU (London), EU (Paris), EU (Stockholm), South America (Sao Paulo), US East (N. Virginia), US East (Ohio), US West (N. California), US West (Oregon). For the lastest information, visit the [AWS Regional Services List](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/).
 
 <br>
 
@@ -484,55 +484,62 @@ Follow the instructions below to clean up the workshop environment.
 
 Search for **mskconnect** in the search box, select the target bucket (e.g. mskconnect-bucket-**AccountId**-**Region**-**RandomGUID**) and click the **Empty** button on the top right.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-1.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-01.png" width="90%"></p>
 <br>
 
 2. On the **Empty Bucket** screen, type **permanently delete** to confirm deletion and click **Empty**.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-2.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-02.png" width="90%"></p>
 <br>
 
 3. You should see a confirmation that the S3 bucket is successfully emptied.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-3.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-03.png" width="90%"></p>
 <br>
 
 4. Next we will delete the MSK Connect connectors that we created previously. Open the Amazon MSK console at [https://console.aws.amazon.com/msk/](https://console.aws.amazon.com/msk/)
 
 In the left pane choose **Connectors** under **MSK Connect**, select the target Connector to be deleted (e.g. **mskconnect-salesforce-connector**) and click the **Delete** button on the top right.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-4.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-04.png" width="90%"></p>
 <br>
 
 5. Confirm deletion by typing in the connector name (e.g. **mskconnect-salesforce-connector**) and click **Delete**.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-5.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-05.png" width="90%"></p>
 <br>
 
 6. You should see a confirmation that the connector is successfully deleted. Repeat the steps to delete all the connectors.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-6.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-06.png" width="90%"></p>
 <br>
 
 7. Finally we will delete the CloudFormation stack to clean up all the related resources created in the workshop. Open the AWS CloudFormation console at [https://console.aws.amazon.com/cloudformation/](https://console.aws.amazon.com/cloudformation/)
 
 Select the CloudFormation stack that you have created during the Lab Setup section (e.g. **mskconnect-workshop**), click the **Delete** button to the top right.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-7.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-07.png" width="90%"></p>
 <br>
 
 8. Confirm deletion by clicking **Delete stack**.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-8.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-08.png" width="90%"></p>
 <br>
 
 9. You should see that the stack deletion is initiated now. Once the stack is deleted, it will disappear from the stack list. You may refresh the page by clicking the refresh button.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-9.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/cleanup-09.png" width="90%"></p>
 <br>
 
-**The above steps should clean up all the resources that we have previously provisioned in the MSK Connect Workshop.**
+**The above steps should clean up all the resources (except the MSK Connect Custom Plugins, see [Known Issues](https://github.com/aaronchong888/AWS-MSK-Connect-Workshop#Known-Issues)) that we have previously provisioned in the MSK Connect Workshop.**
 
+<br>
+
+## Known Issues
+
+- You may find that the MSK Connect **custom plugins** cannot be cleaned up on the Amazon MSK Console. At the time of writing (15 Oct 2021), the **DeleteCustomPlugin** API operation is currently missing from the [Amazon MSK Connect API Reference](https://docs.aws.amazon.com/MCK/latest/mck/Welcome.html).
+
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/issues-01.png" width="90%"></p>
 <br>
 
 ## Authors
