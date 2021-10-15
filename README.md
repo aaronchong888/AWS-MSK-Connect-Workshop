@@ -27,22 +27,22 @@ The workshop is supported in the regions where the Amazon MSK Connect feature is
 
 Choose a region where the Amazon MSK Connect feature is available (e.g. **us-east-1**), this will be the region that you are using for the workshop.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step0-1.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/labsetup-01.png" width="90%"></p>
 <br>
 
 2. Choose **Key Pairs** in the navigation bar on the left, and click on **Create key pair**.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step0-2.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/setup-02.png" width="90%"></p>
 <br>
 
 3. Provide a name for the key pair (e.g. **mskconnect-workshop-keypair**), and click on **Create key pair**.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step0-3.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/setup-03.png" width="90%"></p>
 <br>
 
 4. You should see the message **Successfully created key pair**, and confirm the download of the generated **.pem** file to your local machine.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step0-4.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/setup-04.png" width="90%"></p>
 <br>
 
 #### Deploy required AWS resources via CloudFormation
@@ -53,29 +53,29 @@ Choose a region where the Amazon MSK Connect feature is available (e.g. **us-eas
 
 7. Click on **Create stack** and select **With new resources (standard)**.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step0-7.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/setup-05.png" width="90%"></p>
 <br>
 
 8. Choose **Upload a template file** option and upload the CloudFormation template from your local machine, then click **Next**.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step0-8.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/setup-06.png" width="90%"></p>
 <br>
 
 9. Enter **mskconnect-workshop** as the stack name, choose the **mskconnect-workshop-keypair** under **KeyName**, and then click **Next**.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step0-9.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/setup-07.png" width="90%"></p>
 <br>
 
 10. Leave the default settings on the step **Configure stack options** and click **Next**.
 
 11. Scroll down to the bottom of the **Review mskconnect-workshop** screen and check the box to acknowledge the creation of IAM resources. Click **Create stack** to trigger the creation of the CloudFormation stack.
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step0-11.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/setup-08.png" width="90%"></p>
 <br>
 
 12. Wait until the stack creation is completed before proceeding to the next steps. It may take a while for the MSK cluster creation (~30 to 45mins).
 
-<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step0-12.png" width="90%"></p>
+<p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/setup-09.png" width="90%"></p>
 <br>
 
 #### What does the above CloudFormation template do?
