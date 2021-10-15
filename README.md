@@ -76,6 +76,18 @@ Choose a region where the Amazon MSK Connect feature is available (e.g. **us-eas
 <p align="center"><img alt="" src="https://github.com/aaronchong888/AWS-MSK-Connect-Workshop/blob/main/img/step0-12.png" width="90%"></p>
 <br>
 
+#### What does the above CloudFormation template do?
+
+The CloudFormation stack creates the following resources:
+
+- 2 CloudWatch Log Groups for MSK Cluster and MSK Connect connectors respectively, each with 7 days log retention period
+- 1 S3 bucket for storing required Apache Kafka Connect plugin files, and other testing results in some workshop modules
+- 1 VPC with 1 Public subnet and 3 Private subnets, and the required networking components such as Route Tables, Internet Gateway, NAT Gateway & Elastic IP, VPC Gateway Endpoint for S3
+- 1 `m5.large` EC2 instance with Java 1.8.0 and Apache Kafka version 2.2.1 installed, and the required Security Group, IAM Role, EC2 Instance Profile
+- 1 MSK Cluster with 3 `kafka.m5.large` broker nodes configured with Apache Kafka version 2.2.1, and the required Security Group
+
+> Note that the encryption options are disabled in order to reduce the chance of errors in the workshop, this is not a best practice and you should not use the provided CloudFormtaion template in any Production environments
+
 ## Source Connectors
 
 ### Salesforce
